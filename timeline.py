@@ -97,8 +97,17 @@ def get_timeline_data():
     # If Finish is bad (NaT), set it to be the same as Start
     df['Finish'] = df['Finish'].fillna(df['Start'])
     
+    # ------------------------------------------------------------------
+    # --- THIS IS THE FIX ---
+    # Find all events where Start and Finish are the same
+    mask = (df['Finish'] == df['Start'])
+    
+    # For those events, add 1 day to the Finish time to make them visible
+    df.loc[mask, 'Finish'] = df.loc[mask, 'Start'] + pd.DateOffset(days=1)
+    # ------------------------------------------------------------------
+    
     return df
-
+    
 def create_timeline(df):
     """Creates and displays an interactive timeline chart from the DataFrame."""
     
