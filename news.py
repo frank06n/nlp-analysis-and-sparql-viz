@@ -7,17 +7,20 @@ from nltk.tokenize import word_tokenize
 from collections import Counter
 import pandas as pd
 
-# Download required NLTK data
 @st.cache_resource
 def download_nltk_data():
-    try:
-        nltk.data.find('tokenizers/punkt')
-        nltk.data.find('tokenizers/punkt_tab')
-        nltk.data.find('taggers/averaged_perceptron_tagger')
-    except LookupError:
-        nltk.download('punkt')
-        nltk.download('punkt_tab')
-        nltk.download('averaged_perceptron_tagger')
+    resources = [
+        ('tokenizers/punkt', 'punkt'),
+        ('tokenizers/punkt_tab', 'punkt_tab'),
+        ('taggers/averaged_perceptron_tagger', 'averaged_perceptron_tagger'),
+        ('taggers/averaged_perceptron_tagger_eng', 'averaged_perceptron_tagger_eng'),
+    ]
+    
+    for path, name in resources:
+        try:
+            nltk.data.find(path)
+        except LookupError:
+            nltk.download(name)
 
 download_nltk_data()
 
